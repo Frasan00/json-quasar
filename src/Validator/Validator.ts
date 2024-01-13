@@ -28,39 +28,27 @@ export default class Validator {
         const rule = value.getRule();
         validatedBody[key] =
           RuleBuilderUtils.parseString(key, rule.getRule(), body) || null;
-      }
-
-      if (value instanceof NumberBuilder) {
+      } else if (value instanceof NumberBuilder) {
         const rule = value.getRule();
         RuleBuilderUtils.parseNumber(key, rule.getRule(), body);
         validatedBody[key] = body[key];
-      }
-
-      if (value instanceof BooleanBuilder) {
+      } else if (value instanceof BooleanBuilder) {
         const rule = value.getRule();
         RuleBuilderUtils.parseBoolean(key, rule.getRule(), body);
         validatedBody[key] = body[key];
-      }
-
-      if (value instanceof ObjectBuilder) {
+      } else if (value instanceof ObjectBuilder) {
         const rule = value.getRule();
         RuleBuilderUtils.parseObject(key, rule.getRule(), body);
         validatedBody[key] = body[key];
-      }
-
-      if (value instanceof DateBuilder) {
+      } else if (value instanceof DateBuilder) {
         const rule = value.getRule();
         RuleBuilderUtils.parseDate(key, rule.getRule(), body);
         validatedBody[key] = body[key];
-      }
-
-      if (value instanceof FunctionBuilder) {
+      } else if (value instanceof FunctionBuilder) {
         const rule = value.getRule();
         RuleBuilderUtils.parseFunction(key, rule.getRule(), body);
         validatedBody[key] = body[key];
-      }
-
-      if (value instanceof ArrayBuilder) {
+      } else {
         const rule = value.getRule();
         RuleBuilderUtils.parseArray(key, rule.getRule(), body);
         validatedBody[key] = body[key];
