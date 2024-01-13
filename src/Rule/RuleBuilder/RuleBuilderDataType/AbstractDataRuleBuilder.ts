@@ -12,7 +12,7 @@ export default abstract class AbstractDataRuleBuilder {
     return this;
   }
 
-  public isRequired(): this {
+  public required(): this {
     if (this.rule.getRule().optional) {
       throw new Error(ValidationErrors.requiredAndOptional);
     }
@@ -21,12 +21,23 @@ export default abstract class AbstractDataRuleBuilder {
     return this;
   }
 
-  public isOptional(): this {
+  /**
+   * @description Optional by default, this can be used for better readability
+   */
+  public optional(): this {
     if (this.rule.getRule().optional) {
       throw new Error(ValidationErrors.requiredAndOptional);
     }
 
     this.rule.setRule({ optional: true });
+    return this;
+  }
+
+  /**
+   * @description Sets if a value can be null
+   */
+  public nullable(): this {
+    this.rule.setRule({ nullable: true });
     return this;
   }
 

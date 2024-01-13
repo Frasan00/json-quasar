@@ -18,30 +18,31 @@ class TestValidatorSchema extends ValidatorSchema {
         .trim()
         .pascalCase()
         .message("Invalid name provided")
-        .isRequired(),
-      age: this.rule().number().message("Invalid age provided").isRequired(),
+        .required(),
+      age: this.rule().number().message("Invalid age provided").required(),
       isAdult: this.rule()
         .boolean()
+        .nullable()
         .message("Invalid isAdult provided")
-        .isRequired(),
+        .required(),
       email: this.rule()
         .string()
-        .isOptional()
+        .optional()
         .email()
         .message("Invalid email provided"),
       func: this.rule()
         .function()
         .returns("string")
         .message("Invalid function provided")
-        .isRequired(),
-      now: this.rule().date().afterOrEqual(yesterday).isRequired(),
+        .required(),
+      now: this.rule().date().afterOrEqual(yesterday).required(),
       array: this.rule()
         .array()
-        .isRequired()
+        .required()
         .members(this.rule().array().members(this.rule().number())),
       obj: this.rule()
         .object()
-        .isRequired()
+        .required()
         .members(this.rule().object().members(this.rule().number())),
     };
   }
@@ -52,7 +53,7 @@ const exampleBody = {
   email: "francesco@gmail.com",
   age: 21,
   now: new Date(),
-  isAdult: true,
+  isAdult: null,
   func: () => {
     return "test";
   },
@@ -75,4 +76,10 @@ const validateBody = validatorInstance.validate(
   new TestValidatorSchema(),
 );
 
+const isBodyValid = validatorInstance.isValid(
+  exampleBody,
+  new TestValidatorSchema(),
+);
+
 console.log(validateBody);
+console.log(isBodyValid);

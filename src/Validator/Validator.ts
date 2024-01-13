@@ -7,7 +7,7 @@ import ObjectBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/ObjectBuilder
 import ArrayBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/ArrayBuilder";
 import FunctionBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/FunctionBuilder";
 import DateBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/DateBuilder";
-import RuleBuilderUtils from "../Rule/RuleBuilder/RuleBuilderUtils";
+import RuleBuilderUtils from "../Rule/RuleBuilder/RuleBuilderParser";
 
 export default class Validator {
   /**
@@ -26,11 +26,8 @@ export default class Validator {
     Object.entries(schema).forEach(([key, value]) => {
       if (value instanceof StringBuilder) {
         const rule = value.getRule();
-        validatedBody[key] = RuleBuilderUtils.parseString(
-          key,
-          rule.getRule(),
-          body,
-        );
+        validatedBody[key] =
+          RuleBuilderUtils.parseString(key, rule.getRule(), body) || null;
       }
 
       if (value instanceof NumberBuilder) {

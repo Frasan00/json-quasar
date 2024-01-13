@@ -11,7 +11,17 @@ type BaseType =
   | "Date"
   | "Array";
 
-class RuleBuilderUtils {
+type PropertyValueType =
+  | string
+  | number
+  | boolean
+  | object
+  | Function
+  | Date
+  | Array<any>
+  | null;
+
+class RuleBuilderParser {
   private checkIfRequired(
     rule: RuleType,
     inputBody: InputBody,
@@ -30,7 +40,7 @@ class RuleBuilderUtils {
 
   private checkType(
     propertyKey: string,
-    propertyValue: any,
+    propertyValue: PropertyValueType,
     type: BaseType,
     message?: string,
   ) {
@@ -109,11 +119,16 @@ class RuleBuilderUtils {
     propertyKey: string,
     rule: RuleType,
     inputBody: InputBody,
-  ): string {
+  ): string | void {
     this.checkIfRequired(rule, inputBody, propertyKey);
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
-      return "";
+      return;
     }
+
+    if (rule.nullable && inputBody[propertyKey] === null) {
+      return;
+    }
+
     this.checkType(propertyKey, inputBody[propertyKey], "string", rule.message);
 
     let value = inputBody[propertyKey] as string;
@@ -164,6 +179,11 @@ class RuleBuilderUtils {
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
+
+    if (rule.nullable && inputBody[propertyKey] === null) {
+      return;
+    }
+
     this.checkType(propertyKey, inputBody[propertyKey], "number", rule.message);
 
     const value = inputBody[propertyKey] as number;
@@ -208,6 +228,11 @@ class RuleBuilderUtils {
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
+
+    if (rule.nullable && inputBody[propertyKey] === null) {
+      return;
+    }
+
     this.checkType(
       propertyKey,
       inputBody[propertyKey],
@@ -225,6 +250,11 @@ class RuleBuilderUtils {
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
+
+    if (rule.nullable && inputBody[propertyKey] === null) {
+      return;
+    }
+
     this.checkType(propertyKey, inputBody[propertyKey], "Date", rule.message);
 
     const value = inputBody[propertyKey] as Date;
@@ -294,6 +324,11 @@ class RuleBuilderUtils {
     if (!Object.hasOwnProperty.call(inputBody, propertyKey)) {
       return;
     }
+
+    if (rule.nullable && inputBody[propertyKey] === null) {
+      return;
+    }
+
     this.checkType(propertyKey, inputBody[propertyKey], "object", rule.message);
 
     const members = rule.members;
@@ -328,6 +363,11 @@ class RuleBuilderUtils {
     if (!Object.hasOwnProperty.call(inputBody, propertyKey)) {
       return;
     }
+
+    if (rule.nullable && inputBody[propertyKey] === null) {
+      return;
+    }
+
     this.checkType(propertyKey, inputBody[propertyKey], "Array");
 
     const members = rule.members;
@@ -408,4 +448,4 @@ class RuleBuilderUtils {
   }
 }
 
-export default new RuleBuilderUtils();
+export default new RuleBuilderParser();

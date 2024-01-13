@@ -6,6 +6,7 @@ export type RuleType = {
 
   required?: boolean;
   optional?: boolean;
+  nullable?: boolean;
 
   min?: number;
   max?: number;

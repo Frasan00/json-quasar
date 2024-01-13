@@ -9,7 +9,15 @@ import DateBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/DateBuilder";
 import AbstractDataRuleBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/AbstractDataRuleBuilder";
 
 type acceptedKeys = string | number;
-type acceptedValues = string | number | boolean | object | Function;
+type acceptedValues =
+  | string
+  | number
+  | boolean
+  | object
+  | Function
+  | Date
+  | Array<any>
+  | null;
 
 export type InputBody = {
   [key: acceptedKeys]: acceptedValues;
