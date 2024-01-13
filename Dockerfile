@@ -1,4 +1,4 @@
-FROM node-alpine:20.0.0
+FROM node:20-alpine
 WORKDIR /app
 COPY *.json .
 RUN yarn install
