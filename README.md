@@ -26,7 +26,7 @@
 
 #### Validator instance that will be used for the validations
 ```typescript
-import Validator from "ts-json-validator";
+import Validator from "json-quasar";
 
 const validator = new Validator();
 ```
@@ -35,7 +35,7 @@ const validator = new Validator();
 
 - The Rules for the schema are defined in the setSchemaRules method via builder.
 ```typescript
-import ValidatorSchema from "ts-json-validator";
+import ValidatorSchema from "json-quasar";
 
 class TestValidatorSchema extends ValidatorSchema {
     constructor() {
