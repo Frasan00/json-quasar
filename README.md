@@ -30,7 +30,7 @@ const currentDate = new Date();
 const yesterday = new Date(currentDate);
 yesterday.setDate(currentDate.getDate() - 1);
 
-const validator = validator((schema) => {
+const testValidator = validator((schema) => {
     return {
         name: schema.rule()
             .string()
@@ -93,8 +93,8 @@ const exampleBody = {
 };
 
 // Throws an exception if the body is not valid
-const validateBody = validator.validate(exampleBody);
+const validateBody = testValidator.validate(exampleBody);
 
 // Returns a boolean if the body is valid or not
-const isBodyValid = validator.isValid(exampleBody);
+const isBodyValid = testValidator.isValid(exampleBody);
 ```
