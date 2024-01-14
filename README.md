@@ -1,14 +1,14 @@
-# Typescript json-validator
+# Typescript JSON Validator
 
 - This is a simple json validator for typescript. It is based on the [json-schema](https://json-schema.org/) standard.
-- It is framework-agnostic so it can be used with any framework.
+- It's framework-agnostic, so it can be used with any framework.
 
-### Documentation
+## Documentation
 
 - [Installation](#installation)
 - [Usage](#usage)
 
-### Installation
+## Installation
 
 - Can be installed with npm or yarn
 
@@ -20,105 +20,81 @@
     npm install json-quasar
 ```
   
-### Usage
+## Usage
 
-- Some code snippets about how to use this library:
-
-#### Validator instance that will be used for the validations
+### Create a validator instance
 ```typescript
-import { Validator } from "json-quasar";
-
-const validatorInstance = new Validator();
-```
-
-#### Validator schema that will be used to validate a json body
-
-- The Rules for the schema are defined in the setSchemaRules method via builder.
-```typescript
-import { ValidatorSchema } from "json-quasar";
+import {validator} from "json-quasar";
 
 const currentDate = new Date();
 const yesterday = new Date(currentDate);
 yesterday.setDate(currentDate.getDate() - 1);
 
-class TestValidatorSchema extends ValidatorSchema {
-    constructor() {
-        super();
+const validator = validator((schema) => {
+    return {
+        name: schema.rule()
+            .string()
+            .trim()
+            .pascalCase()
+            .message("Invalid name provided")
+            .required(),
+        age: schema.rule().number().message("Invalid age provided").required(),
+        isAdult: schema.rule()
+            .boolean()
+            .nullable()
+            .message("Invalid isAdult provided")
+            .required(),
+        email: schema.rule()
+            .string()
+            .optional()
+            .email()
+            .message("Invalid email provided"),
+        func: schema.rule()
+            .function()
+            .returns("string")
+            .message("Invalid function provided")
+            .required(),
+        now: schema.rule().date().afterOrEqual(yesterday).required(),
+        array: schema.rule()
+            .array()
+            .required()
+            .members(schema.rule().array().members(schema.rule().number())),
+        obj: schema.rule()
+            .object()
+            .required()
+            .members(schema.rule().object().members(schema.rule().number())),
     }
-
-    public setSchemaRules() {
-        this.schemaRules = {
-            name: this.rule()
-                .string()
-                .trim()
-                .pascalCase()
-                .message("Invalid name provided")
-                .required(),
-            age: this.rule().number().message("Invalid age provided").required(),
-            isAdult: this.rule()
-                .boolean()
-                .nullable()
-                .message("Invalid isAdult provided")
-                .required(),
-            email: this.rule()
-                .string()
-                .optional()
-                .email()
-                .message("Invalid email provided"),
-            func: this.rule()
-                .function()
-                .returns("string")
-                .message("Invalid function provided")
-                .required(),
-            now: this.rule().date().afterOrEqual(yesterday).required(),
-            array: this.rule()
-                .array()
-                .required()
-                .members(this.rule().array().members(this.rule().number())),
-            obj: this.rule()
-                .object()
-                .required()
-                .members(this.rule().object().members(this.rule().number())),
-        }
-    }
-}
+});
 ```
 
-#### Validation Example
-
+### Validation
 ```typescript
 const exampleBody = {
-  name: "test  ",
-  email: "francesco@gmail.com",
-  age: 21,
-  now: new Date(),
-  isAdult: null,
-  func: () => {
-    return "test";
-  },
-  array: [
-    [1, 2, 3],
-    [4, 5, 6],
-  ],
-  obj: {
-    a: {
-      c: 2,
+    name: "test  ",
+    email: "francesco@gmail.com",
+    age: 21,
+    now: new Date(),
+    isAdult: null,
+    func: () => {
+        return "test";
     },
-    b: {
-      d: 3,
+    array: [
+        [1, 2, 3],
+        [4, 5, 6],
+    ],
+    obj: {
+        a: {
+            c: 2,
+        },
+        b: {
+            d: 2,
+        },
     },
-  },
 };
 
 // Throws an exception if the body is not valid
-const validateBody = validatorInstance.validate(
-    exampleBody,
-    new TestValidatorSchema(),
-);
+const validateBody = validator.validate(exampleBody);
 
 // Returns a boolean if the body is valid or not
-const isBodyValid = validatorInstance.isValid(
-    exampleBody,
-    new TestValidatorSchema(),
-);
+const isBodyValid = validator.isValid(exampleBody);
 ```

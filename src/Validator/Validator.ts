@@ -9,18 +9,20 @@ import DateBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/DateBuilder";
 import RuleBuilderParser from "../Rule/RuleBuilder/RuleBuilderParser";
 
 export default class Validator {
+  protected validatorSchema: ValidatorSchema;
+
+  public constructor(validatorSchema: ValidatorSchema) {
+    this.validatorSchema = validatorSchema;
+  }
+
   /**
    * @description - Validates the body of the request, throws an error if the body is invalid
    * @param {InputBody} body - The body of the request
-   * @param {ValidatorSchema} validatorSchema - The schema of the validator
    * @returns {Object} - Returns the validated object
    */
-  public validate<T extends ValidatorSchema>(
-    body: InputBody,
-    validatorSchema: T,
-  ): InputBody {
+  public validate<T extends ValidatorSchema>(body: InputBody): InputBody {
     const validatedBody = {} as InputBody;
-    const schema = validatorSchema.getSchemaRules();
+    const schema = this.validatorSchema.schemaRules;
 
     Object.entries(schema).forEach(([key, value]) => {
       if (value instanceof StringBuilder) {
@@ -60,12 +62,11 @@ export default class Validator {
   /**
    * @description - Checks if the body of the request is valid
    * @param {InputBody} body - The body of the request
-   * @param {ValidatorSchema} validatorSchema - The schema of the validator
    * @returns {boolean} - Returns true if the body is valid, false otherwise
    */
-  public isValid<T>(body: InputBody, validatorSchema: T): boolean {
+  public isValid<T>(body: InputBody): boolean {
     try {
-      this.validate(body, validatorSchema as ValidatorSchema);
+      this.validate(body);
       return true;
     } catch (error) {
       return false;
