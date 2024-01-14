@@ -21,4 +21,4 @@ class Core {
 }
 
 const core = new Core();
-export const newValidator =  core.validator.bind(core);
+export const validator =  core.validator.bind(core);
