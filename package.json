@@ -1,7 +1,7 @@
 {
   "name": "json-quasar",
   "version": "1.0.2",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "repository": "https://github.com/Frasan00/json-validator.git",
   "author": "Frasan00 <francesco.sangiovanni.7@gmail.com>",
   "license": "MIT",

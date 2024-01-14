@@ -1,41 +1,8 @@
-# Typescript json-validator
-
-- This is a simple json validator for typescript. It is based on the [json-schema](https://json-schema.org/) standard.
-- It is framework-agnostic so it can be used with any framework.
-
-### Documentation
-
-- [Installation](#installation)
-- [Usage](#usage)
-
-### Installation
-
-- Can be installed with npm or yarn
-
-```bash
-    yarn add json-quasar
-```
-
-```bash
-    npm install json-quasar
-```
-  
-### Usage
-
-- Some code snippets about how to use this library:
-
-#### Validator instance that will be used for the validations
-```typescript
-import { Validator } from "json-quasar";
+import {Validator} from "json-quasar";
 
 const validatorInstance = new Validator();
-```
 
-#### Validator schema that will be used to validate a json body
-
-- The Rules for the schema are defined in the setSchemaRules method via builder.
-```typescript
-import { ValidatorSchema } from "json-quasar";
+import {ValidatorSchema} from "json-quasar";
 
 const currentDate = new Date();
 const yesterday = new Date(currentDate);
@@ -82,32 +49,28 @@ class TestValidatorSchema extends ValidatorSchema {
         }
     }
 }
-```
 
-#### Validation Example
-
-```typescript
 const exampleBody = {
-  name: "test  ",
-  email: "francesco@gmail.com",
-  age: 21,
-  now: new Date(),
-  isAdult: null,
-  func: () => {
-    return "test";
-  },
-  array: [
-    [1, 2, 3],
-    [4, 5, 6],
-  ],
-  obj: {
-    a: {
-      c: 2,
+    name: "test  ",
+    email: "francesco@gmail.com",
+    age: 21,
+    now: new Date(),
+    isAdult: null,
+    func: () => {
+        return "test";
     },
-    b: {
-      d: 3,
+    array: [
+        [1, 2, 3],
+        [4, 5, 6],
+    ],
+    obj: {
+        a: {
+            c: 2,
+        },
+        b: {
+            d: 3,
+        },
     },
-  },
 };
 
 // Throws an exception if the body is not valid
@@ -121,4 +84,6 @@ const isBodyValid = validatorInstance.isValid(
     exampleBody,
     new TestValidatorSchema(),
 );
-```
+
+console.log(validateBody);
+console.log(isBodyValid)
