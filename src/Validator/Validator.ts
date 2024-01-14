@@ -4,10 +4,9 @@ import StringBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/StringBuilder
 import NumberBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/NumberBuilder";
 import BooleanBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/BooleanBuilder";
 import ObjectBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/ObjectBuilder";
-import ArrayBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/ArrayBuilder";
 import FunctionBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/FunctionBuilder";
 import DateBuilder from "../Rule/RuleBuilder/RuleBuilderDataType/DateBuilder";
-import RuleBuilderUtils from "../Rule/RuleBuilder/RuleBuilderParser";
+import RuleBuilderParser from "../Rule/RuleBuilder/RuleBuilderParser";
 
 export default class Validator {
   /**
@@ -27,30 +26,30 @@ export default class Validator {
       if (value instanceof StringBuilder) {
         const rule = value.getRule();
         validatedBody[key] =
-          RuleBuilderUtils.parseString(key, rule.getRule(), body) || null;
+          RuleBuilderParser.parseString(key, rule.getRule(), body) || null;
       } else if (value instanceof NumberBuilder) {
         const rule = value.getRule();
-        RuleBuilderUtils.parseNumber(key, rule.getRule(), body);
+        RuleBuilderParser.parseNumber(key, rule.getRule(), body);
         validatedBody[key] = body[key];
       } else if (value instanceof BooleanBuilder) {
         const rule = value.getRule();
-        RuleBuilderUtils.parseBoolean(key, rule.getRule(), body);
+        RuleBuilderParser.parseBoolean(key, rule.getRule(), body);
         validatedBody[key] = body[key];
       } else if (value instanceof ObjectBuilder) {
         const rule = value.getRule();
-        RuleBuilderUtils.parseObject(key, rule.getRule(), body);
+        RuleBuilderParser.parseObject(key, rule.getRule(), body);
         validatedBody[key] = body[key];
       } else if (value instanceof DateBuilder) {
         const rule = value.getRule();
-        RuleBuilderUtils.parseDate(key, rule.getRule(), body);
+        RuleBuilderParser.parseDate(key, rule.getRule(), body);
         validatedBody[key] = body[key];
       } else if (value instanceof FunctionBuilder) {
         const rule = value.getRule();
-        RuleBuilderUtils.parseFunction(key, rule.getRule(), body);
+        RuleBuilderParser.parseFunction(key, rule.getRule(), body);
         validatedBody[key] = body[key];
       } else {
         const rule = value.getRule();
-        RuleBuilderUtils.parseArray(key, rule.getRule(), body);
+        RuleBuilderParser.parseArray(key, rule.getRule(), body);
         validatedBody[key] = body[key];
       }
     });

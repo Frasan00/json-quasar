@@ -1,8 +1,9 @@
-import { OptionType, RuleType, ValidationErrors } from "../RuleTypes";
+import { RuleType, ValidationErrors } from "../RuleTypes";
 import RuleError from "../RuleError";
 import { InputBody } from "../../Validator/ValidatorTypes";
+import RuleBuilderUtils from "./RuleBuilderUtils";
 
-type BaseType =
+export type BaseType =
   | "string"
   | "number"
   | "boolean"
@@ -11,7 +12,7 @@ type BaseType =
   | "Date"
   | "Array";
 
-type PropertyValueType =
+export type PropertyValueType =
   | string
   | number
   | boolean
@@ -22,105 +23,12 @@ type PropertyValueType =
   | null;
 
 class RuleBuilderParser {
-  private checkIfRequired(
-    rule: RuleType,
-    inputBody: InputBody,
-    propertyValue: string,
-  ) {
-    if (
-      rule.required &&
-      Object.hasOwnProperty.call(inputBody, propertyValue) === false
-    ) {
-      throw new RuleError(
-        ValidationErrors.required(propertyValue),
-        rule.message,
-      );
-    }
-  }
-
-  private checkType(
-    propertyKey: string,
-    propertyValue: PropertyValueType,
-    type: BaseType,
-    message?: string,
-  ) {
-    switch (type) {
-      case "string":
-        if (typeof propertyValue !== "string") {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "string"),
-            message,
-          );
-        }
-        break;
-      case "number":
-        if (typeof propertyValue !== "number") {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "number"),
-            message,
-          );
-        }
-        break;
-      case "boolean":
-        if (typeof propertyValue !== "boolean") {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "boolean"),
-            message,
-          );
-        }
-        break;
-      case "object":
-        if (typeof propertyValue !== "object") {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "object"),
-            message,
-          );
-        }
-        break;
-      case "Function":
-        if (typeof propertyValue !== "function") {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "Function"),
-            message,
-          );
-        }
-        break;
-      case "Date":
-        if (
-          typeof propertyValue !== "object" ||
-          !(propertyValue instanceof Date)
-        ) {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "Date"),
-            message,
-          );
-        }
-        break;
-      case "Array":
-        if (
-          typeof propertyValue !== "object" ||
-          Array.isArray(propertyValue) === false
-        ) {
-          throw new RuleError(
-            ValidationErrors.type(propertyKey, "Array"),
-            message,
-          );
-        }
-        break;
-      default:
-        throw new RuleError(
-          ValidationErrors.type(propertyKey, "unknown"),
-          message,
-        );
-    }
-  }
-
   public parseString(
     propertyKey: string,
     rule: RuleType,
     inputBody: InputBody,
   ): string | void {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
@@ -129,11 +37,16 @@ class RuleBuilderParser {
       return;
     }
 
-    this.checkType(propertyKey, inputBody[propertyKey], "string", rule.message);
+    RuleBuilderUtils.checkType(
+      propertyKey,
+      inputBody[propertyKey],
+      "string",
+      rule.message,
+    );
 
     let value = inputBody[propertyKey] as string;
     if (rule.inputOptions) {
-      value = this.parseStringRuleOptions(value, rule.inputOptions);
+      value = RuleBuilderUtils.parseStringRuleOptions(value, rule.inputOptions);
     }
 
     if (rule.min && value.length < rule.min) {
@@ -175,7 +88,7 @@ class RuleBuilderParser {
     rule: RuleType,
     inputBody: InputBody,
   ): void {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
@@ -184,7 +97,12 @@ class RuleBuilderParser {
       return;
     }
 
-    this.checkType(propertyKey, inputBody[propertyKey], "number", rule.message);
+    RuleBuilderUtils.checkType(
+      propertyKey,
+      inputBody[propertyKey],
+      "number",
+      rule.message,
+    );
 
     const value = inputBody[propertyKey] as number;
     if (rule.min && value < rule.min) {
@@ -224,7 +142,7 @@ class RuleBuilderParser {
     rule: RuleType,
     inputBody: InputBody,
   ): void {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
@@ -233,7 +151,7 @@ class RuleBuilderParser {
       return;
     }
 
-    this.checkType(
+    RuleBuilderUtils.checkType(
       propertyKey,
       inputBody[propertyKey],
       "boolean",
@@ -246,7 +164,7 @@ class RuleBuilderParser {
     rule: RuleType,
     inputBody: InputBody,
   ): void {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
@@ -255,7 +173,12 @@ class RuleBuilderParser {
       return;
     }
 
-    this.checkType(propertyKey, inputBody[propertyKey], "Date", rule.message);
+    RuleBuilderUtils.checkType(
+      propertyKey,
+      inputBody[propertyKey],
+      "Date",
+      rule.message,
+    );
 
     const value = inputBody[propertyKey] as Date;
     if (rule.before && value.getTime() >= rule.before.getTime()) {
@@ -292,11 +215,11 @@ class RuleBuilderParser {
     rule: RuleType,
     inputBody: InputBody,
   ) {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (Object.hasOwnProperty.call(inputBody, propertyKey) === false) {
       return;
     }
-    this.checkType(
+    RuleBuilderUtils.checkType(
       propertyKey,
       inputBody[propertyKey],
       "Function",
@@ -320,7 +243,7 @@ class RuleBuilderParser {
     rule: RuleType,
     inputBody: InputBody,
   ) {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (!Object.hasOwnProperty.call(inputBody, propertyKey)) {
       return;
     }
@@ -329,7 +252,12 @@ class RuleBuilderParser {
       return;
     }
 
-    this.checkType(propertyKey, inputBody[propertyKey], "object", rule.message);
+    RuleBuilderUtils.checkType(
+      propertyKey,
+      inputBody[propertyKey],
+      "object",
+      rule.message,
+    );
 
     const members = rule.members;
     if (!members) {
@@ -359,7 +287,7 @@ class RuleBuilderParser {
   }
 
   public parseArray(propertyKey: string, rule: RuleType, inputBody: InputBody) {
-    this.checkIfRequired(rule, inputBody, propertyKey);
+    RuleBuilderUtils.checkIfRequired(rule, inputBody, propertyKey);
     if (!Object.hasOwnProperty.call(inputBody, propertyKey)) {
       return;
     }
@@ -368,7 +296,7 @@ class RuleBuilderParser {
       return;
     }
 
-    this.checkType(propertyKey, inputBody[propertyKey], "Array");
+    RuleBuilderUtils.checkType(propertyKey, inputBody[propertyKey], "Array");
 
     const members = rule.members;
     if (!members) {
@@ -413,38 +341,6 @@ class RuleBuilderParser {
     } else {
       throw new RuleError(ValidationErrors.type(propertyKey, "unknown"));
     }
-  }
-
-  private parseStringRuleOptions(value: string, options: OptionType): string {
-    if (options.trim) {
-      value = value.trim();
-    }
-
-    if (options.lowercase) {
-      value = value.toLowerCase();
-    }
-
-    if (options.uppercase) {
-      value = value.toUpperCase();
-    }
-
-    if (options.pascalCase) {
-      value = new RegExp(/^[A-Z][a-z]+$/).test(value)
-        ? value
-        : value[0].toUpperCase() + value.slice(1).toLowerCase();
-    }
-
-    if (options.camelCase) {
-      value = new RegExp(/^[a-z]+$/).test(value)
-        ? value
-        : value[0].toLowerCase() + value.slice(1).toUpperCase();
-    }
-
-    if (options.snakeCase) {
-      value = value.replace(/\s+/g, "_");
-    }
-
-    return value;
   }
 }
 
