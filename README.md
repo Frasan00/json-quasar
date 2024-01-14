@@ -13,11 +13,11 @@
 - Can be installed with npm or yarn
 
 ```bash
-    yarn add json-validator
+    yarn add json-quasar
 ```
 
 ```bash
-    npm install json-validator
+    npm install json-quasar
 ```
   
 ### Usage
@@ -26,7 +26,7 @@
 
 #### Validator instance that will be used for the validations
 ```typescript
-import Validator from "json-validator";
+import Validator from "ts-json-validator";
 
 const validator = new Validator();
 ```
@@ -35,7 +35,7 @@ const validator = new Validator();
 
 - The Rules for the schema are defined in the setSchemaRules method via builder.
 ```typescript
-import ValidatorSchema from "json-validator";
+import ValidatorSchema from "ts-json-validator";
 
 class TestValidatorSchema extends ValidatorSchema {
     constructor() {

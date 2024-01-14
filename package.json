@@ -1,5 +1,5 @@
 {
-  "name": "json-validator",
+  "name": "json-quasar",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/Frasan00/json-validator.git",
@@ -21,5 +21,6 @@
     "typescript": "^5.3.3",
     "prettier": "^3.2.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "keywords": ["json", "validator", "typescript", "validation"]
 }
