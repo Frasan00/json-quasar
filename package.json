@@ -5,20 +5,21 @@
   "repository": "https://github.com/Frasan00/json-validator.git",
   "author": "Frasan00 <francesco.sangiovanni.7@gmail.com>",
   "license": "MIT",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "watch": "tsc --watch",
     "format": "prettier --write '**/*.ts'",
     "lint": "standard",
     "lint:fix": "standard --fix",
-    "build": "tsc",
+    "build": "tsup",
     "dev": "ts-node src/index.ts",
-    "start": "tsc && node dist/test/index.js",
-    "start:watch": "nodemon --exec ts-node src/index.ts"
+    "start": "tsup && node lib/index.js"
   },
   "devDependencies": {
-    "typescript": "^5.3.3"
-  },
-  "dependencies": {
+    "ts-node": "^10.9.2",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
     "prettier": "^3.2.1"
-  }
+  },
+  "dependencies": {}
 }

@@ -7,7 +7,6 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Examples](#examples)
 
 ### Installation
 
@@ -119,9 +118,3 @@ const isBodyValid = validatorInstance.isValid(
     new TestValidatorSchema(),
 );
 ```
-
-### Examples
-
-- A practical example of implementation can be found in the test folder that contains those code snippets.
-
-
