@@ -22,3 +22,7 @@ class Core {
 
 const core = new Core();
 export const validator =  core.validator.bind(core);
+export default {
+  ValidatorSchema,
+  Validator,
+}

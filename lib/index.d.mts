@@ -156,5 +156,9 @@ declare class Validator {
 }
 
 declare const validator: (cb: (schema: ValidatorSchema) => ValidatorSchemaRules) => Validator;
+declare const _default: {
+    ValidatorSchema: typeof ValidatorSchema;
+    Validator: typeof Validator;
+};
 
-export { validator };
+export { _default as default, validator };
